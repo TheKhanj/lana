@@ -24,7 +24,7 @@ static void test_simple_operations() {
 	vec_deinit(&v);
 }
 
-static void test_reallocation() {
+static void test_larse_collection() {
 	vec_t v;
 	vec_init(&v);
 
@@ -32,6 +32,7 @@ static void test_reallocation() {
 	for (int i = 0; i < 100; i++) {
 		arr[i] = i;
 		vec_push(&v, arr + i);
+		assert(vec_size(&v) == i + 1);
 		assert(*(int *)vec_get(&v, i) == i);
 	}
 
@@ -46,6 +47,6 @@ static void test_reallocation() {
 void test_vec() {
 	test_simple_operations();
 	printf("[ok] test_vec: simple operations\n");
-	test_reallocation();
-	printf("[ok] test_vec: reallocation\n");
+	test_larse_collection();
+	printf("[ok] test_vec: large collection\n");
 }
