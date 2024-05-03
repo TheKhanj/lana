@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+build_test() {
+	gcc -c *.c
+
+	local object_files="$(
+		ls *.o |
+			grep -v cli.o
+	)"
+
+	gcc $object_files -o test
+}
+
+build_cli() {
+	gcc -c *.c
+
+	local object_files="$(
+		ls *.o |
+			grep -v test
+	)"
+
+	gcc $object_files -o lana
+}
+
+[ "$1" = "test" ] && build_test || build_cli

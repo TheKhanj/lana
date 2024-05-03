@@ -8,13 +8,13 @@ typedef struct {
 	void **data;
 } vec_t;
 
-void vec_init(vec_t *vec);
-void vec_deinit(vec_t *vec);
+void vec_init(vec_t *self);
+void vec_deinit(vec_t *self);
 
-int vec_size(vec_t *vec);
-void vec_push(vec_t *vec, void *data);
-void *vec_pop(vec_t *vec);
-void *vec_get(vec_t *vec, int index);
-void vec_set(vec_t *vec, int index, void *data);
+int vec_size(vec_t *self);
+void vec_push(vec_t *self, void *data);
+void *vec_pop(vec_t *self);
+void *vec_get(vec_t *self, int index);
+void vec_set(vec_t *self, int index, void *data);
 
 #endif // VEC_H

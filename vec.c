@@ -3,38 +3,41 @@
 
 #include "vec.h"
 
-void vec_init(vec_t *vec) {
-	vec->size = 0;
-	vec->max_size = 1;
+void vec_init(vec_t *self) {
+	self->size = 0;
+	self->max_size = 1;
 
-	vec->data = (void **)malloc(vec->max_size * sizeof(void *));
+	self->data = (void **)malloc(self->max_size * sizeof(void *));
 }
 
-void vec_deinit(vec_t *vec) { free(vec->data); }
+void vec_deinit(vec_t *self) {
+	free(self->data);
+	self->data = NULL;
+}
 
-int vec_size(vec_t *vec) { return vec->size; }
+int vec_size(vec_t *self) { return self->size; }
 
-void vec_push(vec_t *vec, void *data) {
-	vec->data[vec->size++] = data;
+void vec_push(vec_t *self, void *data) {
+	self->data[self->size++] = data;
 
-	if (vec->size == vec->max_size) {
-		vec->max_size *= 2;
-		vec->data = realloc(vec->data, vec->max_size);
+	if (self->size == self->max_size) {
+		self->max_size *= 2;
+		self->data = realloc(self->data, self->max_size * sizeof(void *));
 	}
 }
 
-void *vec_pop(vec_t *vec) { return vec->data[--vec->size]; }
+void *vec_pop(vec_t *self) { return self->data[--self->size]; }
 
-void *vec_get(vec_t *vec, int index) {
+void *vec_get(vec_t *self, int index) {
 	assert(index >= 0);
-	assert(index < vec->size);
+	assert(index < self->size);
 
-	return vec->data[index];
+	return self->data[index];
 }
 
-void vec_set(vec_t *vec, int index, void *data) {
-	assert(index < vec_size(vec));
+void vec_set(vec_t *self, int index, void *data) {
+	assert(index < vec_size(self));
 	assert(index >= 0);
 
-	vec->data[index] = data;
+	self->data[index] = data;
 }
