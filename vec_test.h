@@ -1,6 +1,6 @@
-#ifndef TEST_VEC_H
-#define TEST_VEC_H
+#ifndef VEC_TEST_H
+#define VEC_TEST_H
 
 void test_vec();
 
-#endif // TEST_VEC_H
+#endif // VEC_TEST_H

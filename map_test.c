@@ -6,7 +6,7 @@
 #include "map.h"
 #include "map_test.h"
 
-void test_simple_operations() {
+static void test_simple_operations() {
 	map_t map;
 	map_init(&map);
 
@@ -24,16 +24,16 @@ void test_simple_operations() {
 	char *keys[1];
 	map_keys(&map, keys);
 	assert(strcmp(keys[0], "key") == 0);
-	assert(map_exists(&map, "key"));
+	assert(map_has(&map, "key"));
 
 	map_del(&map, "key");
 	assert(map_size(&map) == 0);
-	assert(!map_exists(&map, "key"));
+	assert(!map_has(&map, "key"));
 
 	map_deinit(&map);
 }
 
-void test_large_collection() {
+static void test_large_collection() {
 	map_t map;
 	map_init(&map);
 
@@ -47,14 +47,14 @@ void test_large_collection() {
 		map_set(&map, key, data + i);
 		assert(map_size(&map) == i + 1);
 		assert(*(int *)map_get(&map, key) == i);
-		assert(map_exists(&map, key));
+		assert(map_has(&map, key));
 	}
 
 	for (int i = 99; i >= 0; --i) {
 		char key[100];
 		sprintf(key, "key-%d", i);
 		map_del(&map, key);
-		assert(!map_exists(&map, key));
+		assert(!map_has(&map, key));
 	}
 
 	map_deinit(&map);

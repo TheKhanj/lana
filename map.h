@@ -15,6 +15,6 @@ void map_keys(map_t *self, char **ret);
 void map_set(map_t *self, char *key, void *value);
 void *map_get(map_t *self, char *key);
 void map_del(map_t *self, char *key);
-int map_exists(map_t *self, char *key);
+int map_has(map_t *self, char *key);
 
 #endif // MAP_H

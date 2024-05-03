@@ -89,7 +89,7 @@ void map_del(map_t *self, char *key) {
 	free(last);
 }
 
-int map_exists(map_t *self, char *key) {
+int map_has(map_t *self, char *key) {
 	int index = find_key_value_index(self, key);
 
 	return index != -1;
