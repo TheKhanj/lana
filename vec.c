@@ -1,6 +1,7 @@
-#include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 
+#include "err.h"
 #include "vec.h"
 
 void vec_init(vec_t *self) {
@@ -15,7 +16,7 @@ void vec_deinit(vec_t *self) {
 	self->data = NULL;
 }
 
-int vec_size(vec_t *self) { return self->size; }
+long vec_size(vec_t *self) { return self->size; }
 
 void vec_push(vec_t *self, void *data) {
 	self->data[self->size++] = data;
@@ -28,16 +29,22 @@ void vec_push(vec_t *self, void *data) {
 
 void *vec_pop(vec_t *self) { return self->data[--self->size]; }
 
-void *vec_get(vec_t *self, int index) {
-	assert(index >= 0);
-	assert(index < self->size);
+static bool is_out_of_range(vec_t *v, long index) {
+	return index < 0 || index >= v->size;
+}
+
+void *vec_get(vec_t *self, long index) {
+	if (is_out_of_range(self, index))
+		return ERR_PTR(VEC_ERR(out_of_range));
 
 	return self->data[index];
 }
 
-void vec_set(vec_t *self, int index, void *data) {
-	assert(index < vec_size(self));
-	assert(index >= 0);
+err_t vec_set(vec_t *self, long index, void *data) {
+	if (is_out_of_range(self, index))
+		return VEC_ERR(out_of_range);
 
 	self->data[index] = data;
+
+	return 0;
 }

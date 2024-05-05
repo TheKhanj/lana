@@ -1,8 +1,8 @@
 #include <assert.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
+#include "err.h"
 #include "map.h"
 #include "map_test.h"
 
@@ -11,7 +11,8 @@ static void test_simple_operations() {
 	map_init(&map);
 
 	assert(map_size(&map) == 0);
-	assert(map_get(&map, "key") == NULL);
+	assert(IS_ERR(map_get(&map, "non-existing-key")));
+	assert(IS_ERR_VALUE(map_del(&map, "non-existing-key")));
 
 	map_set(&map, "key", "value");
 	assert(map_size(&map) == 1);

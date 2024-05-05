@@ -1,7 +1,8 @@
-#include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include "err.h"
 #include "map.h"
 #include "vec.h"
 
@@ -13,7 +14,7 @@ typedef struct {
 void map_init(map_t *self) { vec_init(&self->key_values); }
 
 void map_deinit(map_t *self) {
-	for (int i = 0; i < map_size(self); i++) {
+	for (long i = 0; i < map_size(self); i++) {
 		key_value_t *kv = vec_get(&self->key_values, i);
 		free(kv);
 	}
@@ -21,21 +22,19 @@ void map_deinit(map_t *self) {
 	vec_deinit(&self->key_values);
 }
 
-int map_size(map_t *self) { return vec_size(&self->key_values); }
+long map_size(map_t *self) { return vec_size(&self->key_values); }
 
 void map_keys(map_t *self, char **ret) {
-	// TODO: assert ret.size() to be at least map size
-
-	for (int i = 0; i < map_size(self); i++) {
+	for (long i = 0; i < map_size(self); i++) {
 		key_value_t *kv = (key_value_t *)vec_get(&self->key_values, i);
 
 		ret[i] = kv->key;
 	}
 }
 
-static int find_key_value_index(map_t *self, char *key) {
-	int m_size = map_size(self);
-	for (int i = 0; i < m_size; i++) {
+static long find_key_value_index(map_t *self, char *key) {
+	long m_size = map_size(self);
+	for (long i = 0; i < m_size; i++) {
 		key_value_t *kv = vec_get(&self->key_values, i);
 		if (strcmp(kv->key, key) == 0)
 			return i;
@@ -45,7 +44,8 @@ static int find_key_value_index(map_t *self, char *key) {
 }
 
 static key_value_t *find_key_value(map_t *self, char *key) {
-	int index = find_key_value_index(self, key);
+	long index = find_key_value_index(self, key);
+
 	if (index == -1)
 		return NULL;
 
@@ -72,25 +72,28 @@ void *map_get(map_t *self, char *key) {
 	key_value_t *kv = find_key_value(self, key);
 
 	if (!kv)
-		return NULL;
+		return ERR_PTR(MAP_ERR(key_not_found));
 
 	return kv->value;
 }
 
-void map_del(map_t *self, char *key) {
-	int index = find_key_value_index(self, key);
-	assert(index != -1);
+err_t map_del(map_t *self, char *key) {
+	long index = find_key_value_index(self, key);
+	if (index == -1)
+		return MAP_ERR(key_not_found);
 
-	int v_size = vec_size(&self->key_values);
-	for (int i = index; i < v_size - 1; ++i)
+	long v_size = vec_size(&self->key_values);
+	for (long i = index; i < v_size - 1; ++i)
 		vec_set(&self->key_values, i, vec_get(&self->key_values, i + 1));
 
 	key_value_t *last = vec_pop(&self->key_values);
 	free(last);
+
+	return 0;
 }
 
-int map_has(map_t *self, char *key) {
-	int index = find_key_value_index(self, key);
+bool map_has(map_t *self, char *key) {
+	long index = find_key_value_index(self, key);
 
 	return index != -1;
 }

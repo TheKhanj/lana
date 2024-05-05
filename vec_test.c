@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 
+#include "err.h"
 #include "vec.h"
 
 static void test_simple_operations() {
@@ -10,6 +11,9 @@ static void test_simple_operations() {
 	int data[] = {1, 2, 3};
 
 	assert(vec_size(&v) == 0);
+	const long out_of_range_index = 123;
+	assert(IS_ERR(vec_get(&v, out_of_range_index)));
+	assert(IS_ERR_VALUE(vec_set(&v, out_of_range_index, "")));
 
 	vec_push(&v, data + 0);
 	assert(vec_size(&v) == 1);
