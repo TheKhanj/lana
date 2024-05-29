@@ -11,7 +11,7 @@ static void test_simple_operations() {
 	map_init(&map);
 
 	assert(map_size(&map) == 0);
-	assert(IS_ERR(map_get(&map, "non-existing-key")));
+	assert(IS_ERR_PTR(map_get(&map, "non-existing-key")));
 	assert(IS_ERR_VALUE(map_del(&map, "non-existing-key")));
 
 	map_set(&map, "key", "value");

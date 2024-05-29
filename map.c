@@ -72,7 +72,7 @@ void *map_get(map_t *self, char *key) {
 	key_value_t *kv = find_key_value(self, key);
 
 	if (!kv)
-		return ERR_PTR(MAP_ERR(key_not_found));
+		return CAST_TO_ERR_PTR(MAP_ERR(key_not_found));
 
 	return kv->value;
 }
