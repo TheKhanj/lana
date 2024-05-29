@@ -12,7 +12,7 @@ static void test_simple_operations() {
 
 	assert(vec_size(&v) == 0);
 	const long out_of_range_index = 123;
-	assert(IS_ERR(vec_get(&v, out_of_range_index)));
+	assert(IS_ERR_PTR(vec_get(&v, out_of_range_index)));
 	assert(IS_ERR_VALUE(vec_set(&v, out_of_range_index, "")));
 
 	vec_push(&v, data + 0);
@@ -28,7 +28,7 @@ static void test_simple_operations() {
 	vec_deinit(&v);
 }
 
-static void test_larse_collection() {
+static void test_large_collection() {
 	vec_t v;
 	vec_init(&v);
 
@@ -51,6 +51,6 @@ static void test_larse_collection() {
 void test_vec() {
 	test_simple_operations();
 	printf("[ok] test_vec: simple operations\n");
-	test_larse_collection();
+	test_large_collection();
 	printf("[ok] test_vec: large collection\n");
 }

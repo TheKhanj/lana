@@ -35,7 +35,7 @@ static bool is_out_of_range(vec_t *v, long index) {
 
 void *vec_get(vec_t *self, long index) {
 	if (is_out_of_range(self, index))
-		return ERR_PTR(VEC_ERR(out_of_range));
+		return CAST_TO_ERR_PTR(VEC_ERR(out_of_range));
 
 	return self->data[index];
 }
